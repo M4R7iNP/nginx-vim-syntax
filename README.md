@@ -8,3 +8,5 @@ You can see the original vim.org version here:
 
 * http://www.vim.org/scripts/script.php?script_id=1886
 
+## Runing tests
+vroom -u test/.vimrc test/*

@@ -1,0 +1,9 @@
+Test for vim-nginx
+
+Jump word (w) should not skip slashes
+  :set ft=nginx
+  > iroot /var/www/my-awesome-website<Esc>
+  |^f/wcwsrv
+  root /srv/www/my-awesome-website
+  @clear
+
