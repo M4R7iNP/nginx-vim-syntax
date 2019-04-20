@@ -5,10 +5,12 @@ if exists("b:current_syntax")
   finish
 end
 
+syn include @embeddedLua syntax/lua.vim
+
 syn match ngxVariable '\$\(\w\+\|{\w\+}\)'
 syn match ngxVariableBlock '\$\(\w\+\|{\w\+}\)' contained
 syn match ngxVariableString '\$\(\w\+\|{\w\+}\)' contained
-syn region ngxBlock start=+^+ end=+{+ skip=+\${+ contains=ngxComment,ngxDirectiveBlock,ngxVariableBlock,ngxString oneline
+syn region ngxBlock start=+^+ end=+{+ skip=+\${+ contains=ngxComment,ngxDirectiveBlock,ngxDirectiveThirdPartyBlock,ngxVariableBlock,ngxString oneline
 syn region ngxString start=+\z(["']\)+ end=+\z1+ skip=+\\\\\|\\\z1+ contains=ngxVariableString
 syn match ngxComment ' *#.*$'
 
@@ -811,6 +813,80 @@ syn keyword ngxDirectiveThirdParty xss_get
 syn keyword ngxDirectiveThirdParty xss_input_types
 syn keyword ngxDirectiveThirdParty xss_output_type
 
+" Lua module (part of openresty)
+syn match ngxLuaBlockVariable '\$\(\w\+\|{\w\+}\)' contained skipwhite transparent nextgroup=ngxLuaBlockBraces
+syn region ngxLuaBlockBraces start=+{+ end=+}+ contained
+syn region ngxLuaBlock start=+{+ms=e+1 end=+}+me=s-1 keepend contained containedin=ngxLuaBlockBraces contains=@embeddedLua
+syn keyword ngxDirectiveThirdPartyBlock set_by_lua_block skipwhite nextgroup=ngxLuaBlockVariable
+
+syn keyword ngxDirectiveThirdPartyBlock init_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock init_worker_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock content_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock rewrite_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock access_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock header_filter_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock body_filter_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock log_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock balancer_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock ssl_certificate_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock ssl_session_fetch_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+syn keyword ngxDirectiveThirdPartyBlock ssl_session_store_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
+
+syn keyword ngxDirectiveThirdParty lua_load_resty_core
+syn keyword ngxDirectiveThirdParty lua_capture_error_log
+syn keyword ngxDirectiveThirdParty lua_use_default_type
+syn keyword ngxDirectiveThirdParty lua_malloc_trim
+syn keyword ngxDirectiveThirdParty lua_code_cache
+syn keyword ngxDirectiveThirdParty lua_regex_cache_max_entries
+syn keyword ngxDirectiveThirdParty lua_regex_match_limit
+syn keyword ngxDirectiveThirdParty lua_package_path
+syn keyword ngxDirectiveThirdParty lua_package_cpath
+syn keyword ngxDirectiveThirdParty init_by_lua
+syn keyword ngxDirectiveThirdParty init_by_lua_file
+syn keyword ngxDirectiveThirdParty init_worker_by_lua
+syn keyword ngxDirectiveThirdParty init_worker_by_lua_file
+syn keyword ngxDirectiveThirdParty set_by_lua
+syn keyword ngxDirectiveThirdParty set_by_lua_file
+syn keyword ngxDirectiveThirdParty content_by_lua
+syn keyword ngxDirectiveThirdParty content_by_lua_file
+syn keyword ngxDirectiveThirdParty rewrite_by_lua
+syn keyword ngxDirectiveThirdParty rewrite_by_lua_file
+syn keyword ngxDirectiveThirdParty access_by_lua
+syn keyword ngxDirectiveThirdParty access_by_lua_file
+syn keyword ngxDirectiveThirdParty header_filter_by_lua
+syn keyword ngxDirectiveThirdParty header_filter_by_lua_file
+syn keyword ngxDirectiveThirdParty body_filter_by_lua
+syn keyword ngxDirectiveThirdParty body_filter_by_lua_file
+syn keyword ngxDirectiveThirdParty log_by_lua
+syn keyword ngxDirectiveThirdParty log_by_lua_file
+syn keyword ngxDirectiveThirdParty balancer_by_lua_file
+syn keyword ngxDirectiveThirdParty lua_need_request_body
+syn keyword ngxDirectiveThirdParty ssl_certificate_by_lua_file
+syn keyword ngxDirectiveThirdParty ssl_session_fetch_by_lua_file
+syn keyword ngxDirectiveThirdParty ssl_session_store_by_lua_file
+syn keyword ngxDirectiveThirdParty lua_shared_dict
+syn keyword ngxDirectiveThirdParty lua_socket_connect_timeout
+syn keyword ngxDirectiveThirdParty lua_socket_send_timeout
+syn keyword ngxDirectiveThirdParty lua_socket_send_lowat
+syn keyword ngxDirectiveThirdParty lua_socket_read_timeout
+syn keyword ngxDirectiveThirdParty lua_socket_buffer_size
+syn keyword ngxDirectiveThirdParty lua_socket_pool_size
+syn keyword ngxDirectiveThirdParty lua_socket_keepalive_timeout
+syn keyword ngxDirectiveThirdParty lua_socket_log_errors
+syn keyword ngxDirectiveThirdParty lua_ssl_ciphers
+syn keyword ngxDirectiveThirdParty lua_ssl_crl
+syn keyword ngxDirectiveThirdParty lua_ssl_protocols
+syn keyword ngxDirectiveThirdParty lua_ssl_trusted_certificate
+syn keyword ngxDirectiveThirdParty lua_ssl_verify_depth
+syn keyword ngxDirectiveThirdParty lua_http10_buffering
+syn keyword ngxDirectiveThirdParty rewrite_by_lua_no_postpone
+syn keyword ngxDirectiveThirdParty access_by_lua_no_postpone
+syn keyword ngxDirectiveThirdParty lua_transform_underscores_in_response_headers
+syn keyword ngxDirectiveThirdParty lua_check_client_abort
+syn keyword ngxDirectiveThirdParty lua_max_pending_timers
+syn keyword ngxDirectiveThirdParty lua_max_running_timers
+syn keyword ngxDirectiveThirdParty lua_sa_restart
+
 " highlight
 
 hi link ngxComment Comment
@@ -828,5 +904,6 @@ hi link ngxDirectiveError Constant
 hi link ngxDirectiveDeprecated Error
 hi link ngxDirective Identifier
 hi link ngxDirectiveThirdParty Special
+hi link ngxDirectiveThirdPartyBlock Special
 
 let b:current_syntax = "nginx"
