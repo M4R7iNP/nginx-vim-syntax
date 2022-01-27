@@ -816,7 +816,7 @@ syn keyword ngxDirectiveThirdParty xss_output_type
 " Lua module (part of openresty)
 syn match ngxLuaBlockVariable '\$\(\w\+\|{\w\+}\)' contained skipwhite transparent nextgroup=ngxLuaBlockBraces
 syn region ngxLuaBlockBraces start=+{+ end=+}+ contained
-syn region ngxLuaBlock start=+{+ms=e+1 end=+}+me=s-1 keepend contained containedin=ngxLuaBlockBraces contains=@embeddedLua
+syn region ngxLuaBlock start=+{+ms=e+1 end=+}+me=s-1 extend contained containedin=ngxLuaBlockBraces contains=@embeddedLua
 syn keyword ngxDirectiveThirdPartyBlock set_by_lua_block skipwhite nextgroup=ngxLuaBlockVariable
 
 syn keyword ngxDirectiveThirdPartyBlock init_by_lua_block skipwhite nextgroup=ngxLuaBlockBraces
